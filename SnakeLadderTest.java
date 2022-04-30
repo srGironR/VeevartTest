@@ -65,33 +65,53 @@ class SnakeNLadder{
     //Comienzo de el juego
 
     public void startGame (){
-        int player1Position=0;
+        int player1Position=0,  player2Position=0;
         int currentPlayer = -1;		
 		Scanner scan= new Scanner(System.in);
 		String rPressed;
 		int diceValue = 0;
         
         //Comienza el loop hasta ganar
-        do{            
+        do{ 
+            System.out.println(currentPlayer == -1 ? "\n\nTurno del primer Jugador" : "\n\nTurno del segundo Jugador");           
 		    System.out.println("Jugador presione 'r' para tirar el dado");
 		    rPressed=scan.next();
 		    diceValue=rollDice();
             
-            //Indica el turno, posición y dado para calcular cuanto avanza
+            //Indica el turno para el primer jugador, posición y dado para calcular cuanto avanza
             if (currentPlayer==-1) {
                 System.out.println("Dado arroja : "+diceValue);
                 player1Position=calculatePlayerValue(player1Position, diceValue);                
-                System.out.println("Jugador se encuentra en el cuadro : "+player1Position);                
+                System.out.println("Primer Jugador se encuentra en el cuadro : "+player1Position);
+                System.out.println("Segundo Jugador se encuentra en el cuadro : "+player2Position);                
                 System.out.println("-------------------------");
 
 
-                //Indica si el jugador ha ganado y procede a reiniciar el juego
+                //Indica si el primer jugador ha ganado y procede a reiniciar el juego
                 if(isWin(player1Position)){
-                    System.out.println("Felicidades ganó");
+                    System.out.println("Felicidades ganó el Primer Jugador");
                     player1Position = 0;
                     System.out.println("se procede a reiniciar el juego");
+                    return;
                 }
-            }
+            } else {
+
+                //Indica el turno para el segundo jugador, posición y dado para calcular cuanto avanza
+                System.out.println("Dado arroja : "+diceValue);
+                player2Position = calculatePlayerValue(player2Position, diceValue);
+		        System.out.println("Primer Jugador se encuentra en el cuadro : "+player1Position);
+		        System.out.println("Segundo Jugador se encuentra en el cuadro : "+player2Position);
+		        System.out.println("-------------------------");
+
+                //Indica si el segundo jugador ha ganado y procede a reiniciar el juego
+		        if (isWin(player2Position)) {
+		          System.out.println("Felicidades ganó el Segundo Jugador");
+		          return;
+		        }
+            } 
+            //da paso a que el turno se acabe y comience para el primer jugador de nuevo hasta ganar
+            currentPlayer = -currentPlayer;
+            
             //Indica que el turno no termina hasta volver a presionar r
         } while("r".equals(rPressed));
 
